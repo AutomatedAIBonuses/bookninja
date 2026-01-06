@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book Ninja + Bonus Stack</title>
+  <meta name="description" content="Claim a bonus stack when you grab the offer. Includes jump links, repeated buy buttons, countdown, and exit popup." />
+  <meta property="og:title" content="Book Ninja + Bonus Stack" />
+    <meta property="og:description" content="Claim a bonus stack when you grab the offer. Includes jump links, repeated buy buttons, countdown, and exit popup." />
+  <style>
+  :root{
+    --accent:#ffd08a;
+    --accent-rgb:255,208,138;
+    --bg:#070a0f;
+    --text:#eaf1fb;
+    --muted:rgba(234,241,251,.72);
+    --card:rgba(15,22,32,.78);
+    --card2:rgba(10,15,22,.70);
+    --line:rgba(255,255,255,.12);
+    --shadow:0 22px 70px rgba(0,0,0,.48);
+    --radius:18px;
+    --radius2:14px;
+    --font: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+    --cta-text:#1a1305;
+    --cta-g1:rgba(250,204,21,1);
+    --cta-g2:rgba(245,158,11,1);
+    --cta-border:rgba(253,230,138,.65);
+    --cta-shadow:0 14px 32px rgba(245,158,11,.30), 0 0 0 1px rgba(253,230,138,.25) inset;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--font);
+    color:var(--text);
+    
+    background:
+      radial-gradient(1100px 520px at 30% -10%, rgba(var(--accent-rgb), .22), transparent 62%),
+      radial-gradient(900px 520px at 100% 0%, rgba(125, 211, 252, .12), transparent 58%),
+      linear-gradient(180deg, var(--bg) 0%, #05070b 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.06'%3E%3Cpath d='M120 0c30 30 30 90 0 120s-90 30-120 0 30-90 120-120Z'/%3E%3Cpath d='M240 120c-30 30-90 30-120 0s-30-90 0-120 90 30 120 120Z'/%3E%3C/g%3E%3C/svg%3E");
+  
+    background-size: auto, auto, auto, 240px 240px;
+    background-blend-mode: screen, screen, normal, normal;
+  }
+  a{color:inherit}
+  .wrap{max-width:920px; margin:0 auto; padding:16px 14px 34px}
+  .header{
+    position:sticky; top:0; z-index:20;
+    background: rgba(7,10,15,.78);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .headerInner{max-width:920px; margin:0 auto; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .logoText{font-weight:1000; letter-spacing:.2px}
+  .topCta{display:flex; gap:10px; align-items:center}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:12px 16px;
+    border-radius: 999px;
+    border:1px solid var(--line);
+    background: rgba(15,22,32,.70);
+    text-decoration:none;
+    font-weight:900;
+    letter-spacing:.2px;
+  }
+  .btn.alt{
+    border-color: rgba(var(--accent-rgb), .35);
+    background: rgba(var(--accent-rgb), .10);
+  }
+  .btn.cta{
+    border-color: var(--cta-border);
+    color: var(--cta-text);
+    background: linear-gradient(180deg, var(--cta-g1), var(--cta-g2));
+    box-shadow: var(--cta-shadow);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  .btn.cta:hover{filter:brightness(1.06)}
+  .btn.cta:active{transform: translateY(1px)}
+  .btn.big{padding:14px 18px; font-size:14px}
+  .btn.small{padding:10px 14px; font-size:12px}
+  .hero{
+    margin-top:14px;
+    padding:18px;
+    border-radius: var(--radius);
+    border:1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    position:relative;
+  }
+  .badge{
+    display:inline-flex; align-items:center;
+    padding:8px 12px;
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb), .14);
+    border:1px solid rgba(var(--accent-rgb), .40);
+    font-weight:900;
+    font-size:12px;
+    letter-spacing:.5px;
+    text-transform: uppercase;
+  }
+  h1{margin:10px 0 6px; font-size:34px; line-height:1.08}
+  .sub{
+    color: var(--muted);
+    font-weight:1000;
+    letter-spacing:.7px;
+    text-transform: uppercase;
+    margin:0 0 12px;
+  }
+  .intro{color:var(--muted); line-height:1.6; margin:10px 0 14px; max-width: 64ch}
+  .heroActions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .toc{
+    margin-top:12px;
+    padding:12px;
+    border-radius: var(--radius2);
+    border:1px dashed var(--line);
+    background: var(--card2);
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .toclink{
+    padding:8px 10px;
+    border-radius: 999px;
+    border:1px solid var(--line);
+    background: rgba(15,22,32,.60);
+    font-weight:900;
+    text-decoration:none;
+    font-size:13px;
+  }
+  .countdown{
+    margin-top:12px;
+    padding:12px;
+    border-radius: var(--radius2);
+    border:1px solid rgba(var(--accent-rgb), .35);
+    background: rgba(var(--accent-rgb), .10);
+  }
+  .countdown.mini{margin-top:0; padding:10px}
+  .countdown.micro{margin-top:0; padding:10px; border-style:dashed}
+  .countTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .countLabel{font-weight:1000}
+  .countEnds{color:var(--muted); font-weight:800; font-size:12px}
+  .timeRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+  .countdown.mini .timeRow,
+  .countdown.micro .timeRow{gap:8px; margin-top:8px}
+  .tbox{
+    min-width:100px;
+    padding:10px;
+    border-radius: 14px;
+    border:1px solid var(--line);
+    background: rgba(15,22,32,.65);
+    text-align:center
+  }
+  .countdown.mini .tbox,
+  .countdown.micro .tbox{min-width: 80px; padding:8px; border-radius: 12px}
+  .tnum{font-weight:1000; font-size:22px}
+  .countdown.mini .tnum,
+  .countdown.micro .tnum{font-size:18px}
+  .tunit{color:var(--muted); font-weight:900; font-size:12px}
+  .expired{margin-top:8px; font-weight:1000}
+  .section{
+    margin-top:14px;
+    padding:18px;
+    border-radius: var(--radius);
+    border:1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .section h2{margin:0 0 10px; font-size:20px; text-transform:uppercase; letter-spacing:.4px}
+  .section p{margin:10px 0; color:var(--muted); line-height:1.65}
+  .section ul{margin:10px 0 0 18px; color:var(--muted); line-height:1.65}
+  .video{margin-top:12px; border-radius: var(--radius2); overflow:hidden; border:1px solid var(--line); background:#000}
+  .video .ratio{position:relative; padding-top:56.25%}
+  .video iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+  .callouts{margin-top:14px; display:grid; gap:14px}
+  .callout{
+    padding:18px;
+    border-radius: var(--radius);
+    border:1px solid rgba(var(--accent-rgb), .30);
+    background: rgba(var(--accent-rgb), .08);
+    box-shadow: var(--shadow);
+  }
+  .calloutHead{
+    font-weight:1000;
+    font-size:22px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom:8px;
+  }
+  .calloutBody{color:var(--muted); line-height:1.65; margin-bottom:10px}
+  .sectionCta{margin-top:14px; display:grid; gap:10px; justify-items:center}
+  .ctaRow{width:100%; display:grid; gap:10px}
+  .ctaRow .btn.alt{justify-self:center}
+  .note{
+    margin-top:12px;
+    padding:12px;
+    border-radius: var(--radius2);
+    border:1px solid var(--line);
+    background: rgba(10,15,22,.68);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:14px;
+  }
+  .bonusList{display:grid; gap:10px; margin-top:10px}
+  .bitem{
+    display:grid;
+    grid-template-columns: 44px 1fr;
+    gap:12px;
+    padding:14px;
+    border-radius: var(--radius2);
+    border:1px solid var(--line);
+    background: var(--card2);
+  }
+  .bicon{
+    width:44px; height:44px;
+    border-radius: 14px;
+    display:grid;
+    place-items:center;
+    background: rgba(var(--accent-rgb), .16);
+    border:1px solid rgba(var(--accent-rgb), .35);
+  }
+  .bicon svg{width:22px; height:22px; fill: var(--text); opacity:.92}
+  .bicon .emoji{font-size:22px}
+  .btitle{font-weight:1000}
+  .bdesc{color:var(--muted); margin-top:6px; line-height:1.55}
+  .bmeta{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center}
+  .bval{
+    font-weight:1000;
+    border:1px solid rgba(var(--accent-rgb), .45);
+    background: rgba(var(--accent-rgb), .12);
+    padding:6px 10px;
+    border-radius: 999px;
+    white-space:nowrap;
+    font-size:12px;
+  }
+  .bcta{margin-top:12px; display:grid; gap:10px}
+  .delivery{
+    margin-top:14px;
+    padding:14px;
+    border-radius: var(--radius2);
+    border:1px solid rgba(var(--accent-rgb), .35);
+    background: rgba(var(--accent-rgb), .10);
+  }
+  .deliveryHead{font-weight:1000; text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px}
+  .deliveryBody{color:var(--muted); line-height:1.6}
+  .author{
+    margin-top:14px;
+    padding:18px;
+    border-radius: var(--radius);
+    border:1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .authorGrid{display:grid; grid-template-columns: 84px 1fr; gap:14px; align-items:start}
+  .avatar{
+    width:84px; height:84px;
+    border-radius: 999px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background: rgba(var(--accent-rgb), .12);
+    display:grid;
+    place-items:center;
+  }
+  .avatar img{width:100%; height:100%; object-fit:cover}
+  .avatarFallback{font-weight:1000; font-size:26px}
+  .authorName{font-weight:1000; font-size:18px}
+  .authorHeadline{color:var(--muted); font-weight:900; margin-top:4px}
+  .authorBio p{margin:10px 0; color:var(--muted); line-height:1.6}
+  .authorBullets ul{margin:10px 0 0 18px; color:var(--muted); line-height:1.6}
+  .authorCta{margin-top:12px}
+  .claimGrid{display:grid; gap:14px; align-items:start}
+  .claimImg img{max-width:100%; border-radius: var(--radius2); border:1px solid var(--line)}
+  .footer{
+    margin-top:16px;
+    padding:16px;
+    border-radius: var(--radius);
+    border:1px solid var(--line);
+    background: var(--card);
+    color:var(--muted);
+    line-height:1.65;
+    font-size:13px;
+  }
+  .sticky{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    padding:10px 12px;
+    background: rgba(7,10,15,.80);
+    border-top:1px solid var(--line);
+    backdrop-filter: blur(12px);
+  }
+  .stickyInner{max-width:920px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .stickyText strong{display:block}
+  .muted{color:var(--muted)}
+  .micro{font-size:12px}
+  .btn.full{width:100%}
+  .modal{position:fixed; inset:0; display:none; place-items:center; z-index:80; background: rgba(0,0,0,.55); padding: 18px}
+  .modal.show{display:grid}
+  .modalCard{
+    width:min(520px, 100%);
+    border-radius: var(--radius);
+    border:1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    position:relative;
+  }
+  .modalHead{font-weight:1000; font-size:20px; margin-bottom:8px}
+  .modalBody{color:var(--muted); line-height:1.6; margin-bottom:12px}
+  .x{
+    position:absolute; right:10px; top:10px;
+    width:38px; height:38px; border-radius: 12px;
+    border:1px solid var(--line);
+    background: rgba(15,22,32,.70);
+    color:var(--text);
+    font-size:22px;
+    cursor:pointer;
+  }
+  @media (max-width: 720px){
+    h1{font-size:28px}
+    .tbox{min-width: 140px; flex: 1}
+    .authorGrid{grid-template-columns: 1fr}
+    .avatar{justify-self:center}
+    .bitem{grid-template-columns: 44px 1fr}
+  }
+
+  /* Collapsible optional sections */
+  details.optSection{margin-top:14px}
+  details.optSection summary{
+    cursor:pointer;
+    font-weight:1000;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    padding:8px 0;
+    list-style:none;
+  }
+  details.optSection[open] summary{margin-bottom:8px}
+  </style>
+  
+</head>
+<body>
+  
+
+  <header class="header">
+    <div class="headerInner">
+      <div class="logoText">Automated Ai</div>
+      <div class="topCta">
+        <a class="btn alt" href="#bonuses">Bonuses</a><a class="btn cta" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="hero" id="top">
+      <div class="badge">Hurry — Get Access Below!</div>
+      <h1>Book Ninja</h1>
+      <div class="sub">PLUS Get My NEW AMAZON KDP MASTERCLASS AS A BONUS</div>
+      <div class="intro">In 2026, Amazon is paying half a trillion dollars to ordinary people like you and me...
+
+In Just 4 MINUTES… 
+
+Book Ninja Creates Coloring Books, Word Search Books 
+&amp; Crossword Puzzle Books That Sell Like Crazy on Amazon
+Delivering passive royalty income from the largest bookstore on Earth!</div>
+
+      <div class="heroActions">
+        <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+        <a class="btn alt" href="#what-you-get">See details</a>
+      </div>
+
+      <nav class="toc" aria-label="Jump links"><a href="#what-you-get" class="toclink">What you get</a><a href="#upgrades" class="toclink">Upgrades</a><a href="#bonuses" class="toclink">Bonuses</a><a href="#claim" class="toclink">How to claim</a><a href="#cta" class="toclink">Get access</a></nav>
+
+      
+    <div class="countdown" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      
+    <div class="video" aria-label="Video">
+      <div class="ratio">
+        <iframe src="https://player.vimeo.com/video/1149944263" title="Video" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+      
+    </section>
+
+    
+    <details class="optSection calloutsSection" id="callouts" open>
+      <summary>Here Is What&#039;s Possible!</summary>
+      <section class="callouts">
+        
+        <div class="callout">
+          <div class="calloutBody">Create Amazon-ready coloring books, word search books, crossword puzzles, and non-fiction books in minutes — with the interior and cover done for you.</div>
+          
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        <a class="btn alt" href="https://warriorplus.com/o2/a/pdq3g7q/0" target="_blank" rel="nofollow sponsored">See the offer details</a>
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+        </div>
+
+        
+        <div class="callout">
+          <div class="calloutBody">Let the software handle niche research, book creation, and formatting so you can focus on publishing and collecting royalties.</div>
+          
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        <a class="btn alt" href="https://warriorplus.com/o2/a/pdq3g7q/0" target="_blank" rel="nofollow sponsored">Jump to bonuses</a>
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+        </div>
+      </section>
+    </details>
+  
+
+    <section class="section" id="what-you-get">
+      <h2>What you get</h2>
+      <p>What it is, who it&#039;s for, and why it matters.</p><ul><li>AI-powered book creation for Amazon KDP</li></ul><ul><li>Finds trending niches &amp; generates complete books in minutes</li></ul><ul><li>Creates interiors &amp; covers, ready to upload</li></ul><ul><li>Works for beginners, side-hustlers, and busy users</li></ul><ul><li>Fast, simple, and scalable workflow for passive income</li></ul>
+      
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        <a class="btn alt" href="https://warriorplus.com/o2/a/pdq3g7q/0" target="_blank" rel="nofollow sponsored">See the offer details</a>
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+    </section>
+
+    <section class="section" id="upgrades">
+      <h2>Upgrades</h2>
+      <p>Optional upgrades (edit this list to match the offer):</p>
+      <ul><li>Mass Traffic System: training + tools to drive additional traffic beyond Amazon</li><li>More Traffic &amp; Sales Bundle: advanced traffic strategies and scaling tools</li><li>Ghostwriter: AI-powered non-fiction content expansion features</li><li>Ultimate: extended features and higher creation limits</li><li>Annual (Discounted): full-year access at a reduced rate</li><li>Masterclass: advanced step-by-step publishing and scaling training</li></ul>
+      <div class="note"><p>Always follow platform policies and applicable laws.</p></div>
+      
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        <a class="btn alt" href="https://warriorplus.com/o2/a/pdq3g7q/0" target="_blank" rel="nofollow sponsored">View upgrades</a>
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+    </section>
+
+    
+    <details class="optSection" id="bonuses" open>
+      <summary>Bonus value stack</summary>
+      <section class="section bonus-section">
+        <p>Everything below is delivered when you grab the offer through my link:</p>
+        <div class="bonusList">
+          
+      <article class="bitem" id="bonus-1">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-2.2a3 3 0 0 0 .2-1 3 3 0 0 0-3-3c-1.2 0-2.4.7-3 1.8A3.6 3.6 0 0 0 9 3a3 3 0 0 0-3 3c0 .35.07.69.2 1H4a1 1 0 0 0-1 1v3h9V8h2v3h9V8a1 1 0 0 0-1-1ZM9 5c.7 0 1.3.4 1.6 1H8.5C8.2 6 8 5.6 8 5c0-.6.4-1 1-1Zm6 0c0 .6-.2 1-.5 1h-2.1c.3-.6.9-1 1.6-1 .6 0 1 .4 1 1Z"/><path d="M3 12v8a1 1 0 0 0 1 1h8v-9H3Zm10 0v9h7a1 1 0 0 0 1-1v-8h-8Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle"> The &quot;Perfect Prompt&quot; Cheat Sheet for Book Ninja AI</div>
+          <div class="bdesc">Provide users with copy-and-paste prompts and a framework for creating unique, high-quality, and commercially appealing coloring pages, book interiors, and covers using the Book Ninja AI.</div>
+          <div class="bmeta">
+            <div class="bval">Worth $97</div>
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+      <article class="bitem" id="bonus-2">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle">KDP Listing Optimization Checklist</div>
+          <div class="bdesc">Provide a simple, actionable checklist that guides users through every step of publishing their book on Amazon KDP, ensuring it&#039;s optimized for maximum visibility and sales.</div>
+          <div class="bmeta">
+            <div class="bval">Worth $57</div>
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+      <article class="bitem" id="bonus-3">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 9.95 11h-2.02A8 8 0 1 1 12 4V2Zm1 6h-2v3.17l-2.12 2.12 1.41 1.41L12 12.41V8Zm7.94 3A10 10 0 0 0 13 3.06V5.1A8 8 0 0 1 18.9 11h2.04Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle">The &quot;Launch Day&quot; Royalty Booster Plan</div>
+          <div class="bdesc">Gives users a simple 5-day action plan to follow immediately after publishing their book to help it gain initial traction with Amazon&#039;s algorithm and secure early sales/reviews</div>
+          <div class="bmeta">
+            <div class="bval">Worth $47</div>
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+      <article class="bitem" id="bonus-4">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm1 7V3.5L19.5 9H15Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle">Amazon Author Central Quick-Start Guide</div>
+          <div class="bdesc">To walk users through the simple but crucial process of setting up their Amazon Author Page, which builds trust, helps customers find all their books, and unlocks powerful marketing features like A+ Content.</div>
+          <div class="bmeta">
+            <div class="bval">Worth $37</div>
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+      <article class="bitem" id="bonus-5">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle">&quot;Top 25 Untapped KDP Niches for 2026&quot; Report</div>
+          <div class="bdesc">Provides a curated list of fresh, high-demand, and lower-competition niche ideas that users can immediately plug into the Book Ninja software to create books with a higher chance of success.</div>
+          <div class="bmeta">
+            <div class="bval">Worth $57</div>
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+      <article class="bitem" id="bonus-6">
+        <div class="bicon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7h-2.2a3 3 0 0 0 .2-1 3 3 0 0 0-3-3c-1.2 0-2.4.7-3 1.8A3.6 3.6 0 0 0 9 3a3 3 0 0 0-3 3c0 .35.07.69.2 1H4a1 1 0 0 0-1 1v3h9V8h2v3h9V8a1 1 0 0 0-1-1ZM9 5c.7 0 1.3.4 1.6 1H8.5C8.2 6 8 5.6 8 5c0-.6.4-1 1-1Zm6 0c0 .6-.2 1-.5 1h-2.1c.3-.6.9-1 1.6-1 .6 0 1 .4 1 1Z"/><path d="M3 12v8a1 1 0 0 0 1 1h8v-9H3Zm10 0v9h7a1 1 0 0 0 1-1v-8h-8Z"/></svg></div>
+        <div class="bcontent">
+          <div class="btitle"> Amazon KDP Tool</div>
+          <div class="bdesc">Gives you KDP keywords Combines PDFs Moves PDF pages Calculates royalties Writes your KDP descriptions Detects AI</div>
+          <div class="bmeta">
+            
+          </div>
+          <div class="bcta">
+            <a class="btn cta small" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure It All Here</a>
+            
+    <div class="countdown micro" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+          </div>
+        </div>
+      </article>
+    
+        </div>
+        
+    <div class="delivery">
+      <div class="deliveryHead">How you receive your bonuses</div>
+      <div class="deliveryBody">Your bonuses will be automatically delivered via email. Please check all folders: Inbox, Promotions, and Spam/Junk.</div>
+    </div>
+  
+        
+    <div class="author">
+      <div class="authorGrid">
+        <div class="avatar">
+          <img src="https://i.postimg.cc/zv9kndY4/profile-pic.png" alt="Rigo" loading="lazy">
+        </div>
+        <div>
+          <div class="authorName">Rigo</div>
+          <div class="authorHeadline">Why you can trust this recommendation</div>
+          <div class="authorBio"><p>I’m Rigo from Automated AI, a marketer with 5 years of experience helping people get real results online. My bonuses and strategies make using tools like Book Ninja simple and fast, so you can start building passive income immediately.</p></div>
+          <div class="authorBullets"><ul><li>* 5 years of experience helping everyday people get real results online</li><li>* Simple, actionable strategies — no fluff or guesswork</li><li>* Proven system to save time and start earning passive income</li><li>* Bonuses designed to help you publish faster and smarter</li><li>* Tools and methods used by real KDP publishers, not theory</li></ul></div>
+          <div class="authorCta">
+            <a class="btn cta" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+        <div id="cta"></div>
+        
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        <a class="btn alt" href="https://warriorplus.com/o2/a/pdq3g7q/0" target="_blank" rel="nofollow sponsored">Jump to bonuses</a>
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+      </section>
+    </details>
+  
+
+    
+    <details class="optSection claimSection" id="claim" open>
+      <summary>How To Claim Your Bonuses</summary>
+      <section class="section claim">
+        <h2>How To Claim Your Bonuses</h2>
+        <div class="claimGrid">
+          <div>
+            <ul><li>Buy through the button on this page</li><li>After purchase, check your email for bonus delivery</li><li>Check Inbox, Promotions, and Spam/Junk folders</li></ul>
+            
+          </div>
+          
+        </div>
+        
+    <div class="sectionCta">
+      <a class="btn cta big" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      <div class="ctaRow">
+        
+        
+    <div class="countdown mini" data-countdown>
+      <div class="countTop">
+        <div class="countLabel">Promo ends in:</div>
+        <div class="countEnds">Ends: <span data-ends-at></span></div>
+      </div>
+      <div class="timeRow">
+        <div class="tbox"><div class="tnum" data-cd="days">0</div><div class="tunit">Days</div></div>
+        <div class="tbox"><div class="tnum" data-cd="hours">00</div><div class="tunit">Hours</div></div>
+        <div class="tbox"><div class="tnum" data-cd="mins">00</div><div class="tunit">Minutes</div></div>
+        <div class="tbox"><div class="tnum" data-cd="secs">00</div><div class="tunit">Seconds</div></div>
+      </div>
+      <div class="expired" data-expired hidden>This promotion has ended.</div>
+    </div>
+  
+      </div>
+    </div>
+  
+      </section>
+    </details>
+  
+
+    <section class="footer" id="disclaimer">
+      <p>Disclaimer: This page may contain affiliate links. If you buy through my link, I may earn a commission at no additional cost to you.</p>
+      <!-- Static contact/privacy/terms/disclaimer links and data notice -->
+      <p>
+        <a href="https://royaltyprints.co/contact/" rel="nofollow" target="_blank">Contact</a> · 
+        <a href="https://royaltyprints.co/privacy/" rel="nofollow" target="_blank">Privacy</a> · 
+        <a href="https://royaltyprints.co/terms/" rel="nofollow" target="_blank">Terms</a> · 
+        <a href="https://royaltyprints.co/disclaimer/" rel="nofollow" target="_blank">Disclaimer</a>
+      </p>
+      <p>No personal data leaves your device. Some pages use GA4 to understand usage and improve features.</p>
+      <div class="micro muted" style="margin-top:10px">© 2026 ConvertPulp. All rights reserved.</div>
+    </section>
+  </div>
+
+  
+    <div class="sticky">
+      <div class="stickyInner">
+        <div class="stickyText">
+          <strong>Book Ninja</strong>
+          <span class="muted">PLUS Get My NEW AMAZON KDP MASTERCLASS AS A BONUS</span>
+        </div>
+        <a class="btn cta" href="https://warriorplus.com/o2/a/pdq3g7q/0" rel="nofollow sponsored" target="_blank">Secure Your Copy Here</a>
+      </div>
+    </div>
+  
+    <div class="modal" id="exitModal" aria-hidden="true">
+      <div class="modalCard" role="dialog" aria-modal="true" aria-label="Exit Popup">
+        <button class="x" id="exitClose" aria-label="Close">×</button>
+        <div class="modalHead">Make More Sales With Less Effort</div>
+        <div class="modalBody">Free How To Guide, Access Here.</div>
+        <a class="btn cta full" href="https://royaltyprints.co/convert-pulp/" rel="nofollow sponsored" target="_blank">Access Here</a>
+      </div>
+    </div>
+
+  <script>
+  (function(){
+    const endIso = "2026-01-16T04:09:00.000Z";
+    const endsAtStr = "";
+    const tz = "America/New_York";
+
+    // Set end timestamp label everywhere
+    if (endIso && endsAtStr){
+      document.querySelectorAll("[data-ends-at]").forEach(el => { el.textContent = endsAtStr; });
+    }
+
+    // Countdown updates (all countdown blocks)
+    if (endIso){
+      const end = new Date(endIso).getTime();
+      const blocks = Array.from(document.querySelectorAll("[data-countdown]"));
+
+      const tick = () => {
+        const now = Date.now();
+        let diff = end - now;
+
+        if (diff <= 0){
+          blocks.forEach(b => {
+            const row = b.querySelector(".timeRow");
+            const exp = b.querySelector("[data-expired]");
+            if (row) row.setAttribute("hidden","");
+            if (exp) exp.hidden = false;
+          });
+          return;
+        }
+
+        const days = Math.floor(diff / (1000*60*60*24));
+        diff -= days * (1000*60*60*24);
+        const hrs = Math.floor(diff / (1000*60*60));
+        diff -= hrs * (1000*60*60);
+        const mins = Math.floor(diff / (1000*60));
+        diff -= mins * (1000*60);
+        const secs = Math.floor(diff / 1000);
+
+        blocks.forEach(b => {
+          b.querySelectorAll("[data-cd='days']").forEach(el => el.textContent = String(days));
+          b.querySelectorAll("[data-cd='hours']").forEach(el => el.textContent = String(hrs).padStart(2,"0"));
+          b.querySelectorAll("[data-cd='mins']").forEach(el => el.textContent = String(mins).padStart(2,"0"));
+          b.querySelectorAll("[data-cd='secs']").forEach(el => el.textContent = String(secs).padStart(2,"0"));
+        });
+
+        requestAnimationFrame(() => setTimeout(tick, 250));
+      };
+      tick();
+    }
+
+    // Exit popup
+    const enabled = true;
+    if (enabled){
+      const modal = document.getElementById("exitModal");
+      const closeBtn = document.getElementById("exitClose");
+      let shown = false;
+
+      const open = () => {
+        if (shown) return;
+        shown = true;
+        if (modal){
+          modal.classList.add("show");
+          modal.setAttribute("aria-hidden","false");
+        }
+      };
+      const close = () => {
+        if (modal){
+          modal.classList.remove("show");
+          modal.setAttribute("aria-hidden","true");
+        }
+      };
+
+      closeBtn?.addEventListener("click", close);
+      modal?.addEventListener("click", (e) => {
+        if (e.target === modal) close();
+      });
+
+      // desktop exit intent
+      document.addEventListener("mouseout", (e) => {
+        if (shown) return;
+        if (e.clientY <= 0) open();
+      });
+
+      // backup: after some time on page (mobile-friendly)
+      setTimeout(() => { if (!shown) open(); }, 35000);
+    }
+  })();
+  </script>
+  <img height="1" width="1" style="display:none" src="https://warriorplus.com/o2/a/pdq3g7q/0">
+</body>
+</html>
